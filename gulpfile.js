@@ -43,6 +43,31 @@ const css = function() {
     .pipe(sassLint.failOnError())
     // Source Maps
     .pipe(sourcemaps.init())
+    // Compress
+    .pipe(
+      sass({
+        outputStyle: "expanded"
+      }).on("error", sass.logError)
+    )
+    .pipe(autoprefixer())
+    .pipe(sourcemaps.write())
+    .pipe(concat("style.css"))
+    .pipe(gulp.dest("./"))
+    .pipe(reload({ stream: true }));
+};
+
+const build = function() {
+  return gulp
+    .src("./scss/main.scss")
+    // Sass Lint
+    .pipe(sassLint({
+      configFile: '.sass-lint.yml'
+    }))
+    .pipe(sassLint.format())
+    .pipe(sassLint.failOnError())
+    // Source Maps
+    .pipe(sourcemaps.init())
+    // Compress
     .pipe(
       sass({
         outputStyle: "compressed"
@@ -52,7 +77,6 @@ const css = function() {
     .pipe(sourcemaps.write())
     .pipe(concat("style.css"))
     .pipe(gulp.dest("./"))
-    .pipe(reload({ stream: true }));
 };
 
 const watch = function(cb) {
@@ -64,6 +88,7 @@ const watch = function(cb) {
 
 exports.css = css;
 exports.watch = watch;
+exports.build = gulp.series(build, "babel");
 exports.default = gulp.series(css, "babel", watch, "browser-sync");
 
 // gulp.series // one by one

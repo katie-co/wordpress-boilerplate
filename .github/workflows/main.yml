@@ -24,4 +24,4 @@ jobs:
     # install dependencies using clean install to avoid package lock updates
     - run: npm ci
     # build the project if necessary
-    - run: gulp css
+    - run: gulp build
