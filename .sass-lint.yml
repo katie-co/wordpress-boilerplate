@@ -8,3 +8,10 @@ rules:
     - 1
     -
       size: 2
+  property-sort-order:
+    - 1 
+    # https://github.com/sasstools/sass-lint/blob/develop/lib/config/property-sort-orders/concentric.yml
+    - order: 'concentric'
+  variable-name-format:
+    - 1
+    - convention: 'hyphenatedbem'
