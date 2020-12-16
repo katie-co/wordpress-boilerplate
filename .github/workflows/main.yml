@@ -7,14 +7,15 @@ name: Continuous Integration (CI) Pipeline
 on: [pull_request]
 
 jobs:
-  build:
+  run:
 
     # run build on latest ubuntu
     runs-on: ubuntu-latest
 
     steps:
     # this will check out the current branch (https://github.com/actions/checkout#Push-a-commit-using-the-built-in-token)
-    - uses: actions/checkout@v2
+    - name: Checkout repo
+      uses: actions/checkout@v2
     # installing Node
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
@@ -23,5 +24,11 @@ jobs:
         node-version: 12.x
     # install dependencies using clean install to avoid package lock updates
     - run: npm ci
-    # build the project if necessary
+    # build the project and generate minified css
     - run: gulp build
+    # commit changes
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Minify scripts and styles
+        commit_options: '--no-verify --signoff'

@@ -15,9 +15,9 @@ register_nav_menus(
 
 function styles_and_scripts()
 {
-        wp_enqueue_style('main-style', get_stylesheet_uri());
-        wp_deregister_script('jquery');
-
+    wp_enqueue_style('main-style', get_stylesheet_uri());
+    wp_deregister_script('jquery');
+    wp_enqueue_script('icons', get_template_directory_uri() . '/vendors/all.js');
 }
 add_action('wp_enqueue_scripts', 'styles_and_scripts');
 
