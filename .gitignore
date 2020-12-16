@@ -6,6 +6,3 @@
 
 # Node packages
 node_modules/
-
-# Build files
-style.css
