@@ -1,12 +1,13 @@
-const gulp = require('gulp');
-const babel = require('gulp-babel');
-const sass = require('gulp-dart-sass');
-const stylelint = require('gulp-stylelint');
-const sourcemaps = require('gulp-sourcemaps');
-const autoprefixer = require('gulp-autoprefixer');
-const browserSync = require('browser-sync');
-const reload = browserSync.reload;
-const concat = require('gulp-concat');
+const gulp = require('gulp')
+const babel = require('gulp-babel')
+const sass = require('gulp-dart-sass')
+const stylelint = require('gulp-stylelint')
+const sourcemaps = require('gulp-sourcemaps')
+const autoprefixer = require('autoprefixer')
+const postcss = require('gulp-postcss')
+const browserSync = require('browser-sync')
+const reload = browserSync.reload
+const concat = require('gulp-concat')
 
 gulp.task('babel', () =>
   gulp.src('js/*.js')
@@ -47,7 +48,7 @@ const css = function() {
         outputStyle: 'expanded'
       }).on('error', sass.logError)
     )
-    .pipe(autoprefixer())
+    .pipe(postcss([ autoprefixer() ]))
     .pipe(sourcemaps.write())
     .pipe(concat('style.css'))
     .pipe(gulp.dest('./'))
@@ -69,7 +70,7 @@ const minify = function() {
         outputStyle: 'compressed'
       }).on('error', sass.logError)
     )
-    .pipe(autoprefixer())
+    .pipe(postcss([ autoprefixer() ]))
     .pipe(concat('style.css'))
     .pipe(gulp.dest('./'))
 };
