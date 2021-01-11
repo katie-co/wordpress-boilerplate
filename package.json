@@ -22,7 +22,6 @@
     "gulp-postcss": "^9.0.0",
     "gulp-stylelint": "^13.0.0",
     "postcss": "^8.2.4",
-    "stylelint": "^13.8.0",
     "stylelint": "^13.8.0"
   },
   "dependencies": {
