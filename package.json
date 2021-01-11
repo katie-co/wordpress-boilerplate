@@ -12,13 +12,16 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
-    "browser-sync": "^2.26.7",
+    "autoprefixer": "^10.0.0",
+    "browser-sync": "^2.26.13",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-dart-sass": "^1.0.2",
+    "gulp-postcss": "^9.0.0",
     "gulp-stylelint": "^13.0.0",
+    "postcss": "^8.2.4",
     "stylelint": "^13.8.0"
   },
   "dependencies": {
