@@ -1,25 +1,29 @@
 const gulp = require('gulp')
-const babel = require('gulp-babel')
+// JS
+const rollup = require('gulp-better-rollup');
+const babel = require('rollup-plugin-babel');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
+const concat = require('gulp-concat')
+// SCSS
 const sass = require('gulp-dart-sass')
 const stylelint = require('gulp-stylelint')
 const sourcemaps = require('gulp-sourcemaps')
 const autoprefixer = require('autoprefixer')
 const postcss = require('gulp-postcss')
+// Watch
 const browserSync = require('browser-sync')
 const reload = browserSync.reload
-const concat = require('gulp-concat')
 
-gulp.task('babel', () =>
-  gulp.src('js/*.js')
-  .pipe(sourcemaps.init())
-  .pipe(babel({
-      presets: ['@babel/env']
-  }))
-  .pipe(concat('main.js'))
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest('.'))
-  .pipe(reload({ stream: true }))
-);
+gulp.task('scripts', () => {
+  return gulp.src('js/*.js')
+    .pipe(rollup({ 
+      plugins: [babel(), resolve(), commonjs()] 
+    }, 'umd'))
+    .pipe(gulp.dest('.'))
+    .pipe(reload({ stream: true })
+  )
+});
 
 gulp.task('browser-sync', function() {
   const files = ['./scss/*.s+(a|c)ss', './*.php', './js/*.js',];
@@ -28,7 +32,7 @@ gulp.task('browser-sync', function() {
     notify: true
   });
   gulp.watch('./scss/**/*.s+(a|c)ss', gulp.series(css));
-  gulp.watch('./js/*.js'), gulp.series('babel');
+  gulp.watch('./js/*.js'), gulp.series('scripts');
   gulp.watch('./*.php').on('change', browserSync.reload);
 });
 
@@ -77,19 +81,12 @@ const minify = function() {
 
 const watch = function(cb) {
   gulp.watch('./scss/**/*.scss', gulp.series(css));
-  gulp.watch('./js/*.js'), gulp.series('babel');
+  gulp.watch('./js/*.js'), gulp.series('scripts');
   gulp.watch('./*.php').on('change', browserSync.reload);
   cb();
 };
 
-gulp.task('vendors', function() {
-  return gulp.src('node_modules/@fortawesome/fontawesome-free/js/all.js')
-    .pipe(concat('all.js'))
-    .pipe(gulp.dest('vendors/'))
-    .pipe(reload({ stream: true }));
-});
-
 exports.css = css;
 exports.watch = watch;
-exports.build = gulp.series(minify, 'babel', 'vendors');
-exports.default = gulp.series(css, 'babel', 'vendors', watch, 'browser-sync');
+exports.build = gulp.series(minify, 'scripts');
+exports.default = gulp.series(css, 'scripts', watch, 'browser-sync');
