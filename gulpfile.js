@@ -5,6 +5,7 @@ const babel = require('rollup-plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const concat = require('gulp-concat')
+const uglify = require('gulp-uglify');
 // SCSS
 const sass = require('gulp-dart-sass')
 const stylelint = require('gulp-stylelint')
@@ -15,11 +16,22 @@ const postcss = require('gulp-postcss')
 const browserSync = require('browser-sync')
 const reload = browserSync.reload
 
-gulp.task('scripts', () => {
+gulp.task('rollup', function() {
   return gulp.src('js/*.js')
     .pipe(rollup({ 
       plugins: [babel(), resolve(), commonjs()] 
     }, 'umd'))
+    .pipe(gulp.dest('.'))
+    .pipe(reload({ stream: true })
+  )
+});
+
+gulp.task('uglify', function() {
+  return gulp.src('js/*.js')
+    .pipe(rollup({ 
+      plugins: [babel(), resolve(), commonjs()] 
+    }, 'umd'))
+    .pipe(uglify())
     .pipe(gulp.dest('.'))
     .pipe(reload({ stream: true })
   )
@@ -32,7 +44,7 @@ gulp.task('browser-sync', function() {
     notify: true
   });
   gulp.watch('./scss/**/*.s+(a|c)ss', gulp.series(css));
-  gulp.watch('./js/*.js'), gulp.series('scripts');
+  gulp.watch('./js/*.js'), gulp.series('rollup');
   gulp.watch('./*.php').on('change', browserSync.reload);
 });
 
@@ -81,12 +93,12 @@ const minify = function() {
 
 const watch = function(cb) {
   gulp.watch('./scss/**/*.scss', gulp.series(css));
-  gulp.watch('./js/*.js'), gulp.series('scripts');
+  gulp.watch('./js/*.js'), gulp.series('rollup');
   gulp.watch('./*.php').on('change', browserSync.reload);
   cb();
 };
 
 exports.css = css;
 exports.watch = watch;
-exports.build = gulp.series(minify, 'scripts');
-exports.default = gulp.series(css, 'scripts', watch, 'browser-sync');
+exports.build = gulp.series(minify, 'uglify');
+exports.default = gulp.series(css, 'rollup', watch, 'browser-sync');

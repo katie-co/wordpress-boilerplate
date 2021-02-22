@@ -21,6 +21,7 @@
     "gulp-dart-sass": "^1.0.2",
     "gulp-postcss": "^9.0.0",
     "gulp-stylelint": "^13.0.0",
+    "gulp-uglify": "^3.0.2",
     "postcss": "^8.2.4",
     "rollup": "^1.32.1",
     "rollup-plugin-babel": "^4.4.0",
@@ -33,6 +34,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@glidejs/glide": "^3.4.1",
     "axios": "^0.21.1",
     "gulp-sourcemaps": "^2.6.5",
     "sass-mq": "^5.0.1"
