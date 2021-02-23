@@ -7,10 +7,10 @@
 
 // Import Font Awesome (https://fontawesome.com/how-to-use/on-the-web/advanced/svg-javascript-core)
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
-import { faAddressBook, faUserAstronaut } from '@fortawesome/free-solid-svg-icons'
+import { faUserAstronaut } from '@fortawesome/free-solid-svg-icons'
 
 // We are using a subset of icons
-library.add(faAddressBook, faUserAstronaut)
+library.add(faUserAstronaut)
 
 // Replace any existing <i> tags with <svg> and set up a MutationObserver to
 // continue doing this as the DOM changes.
