@@ -29,7 +29,11 @@ gulp.task('rollup', function() {
 gulp.task('uglify', function() {
   return gulp.src('js/*.js')
     .pipe(rollup({ 
-      plugins: [babel(), resolve(), commonjs()] 
+            plugins: [
+        babel( { compact: true } ),
+        resolve(), 
+        commonjs()
+      ]
     }, 'umd'))
     .pipe(uglify())
     .pipe(gulp.dest('.'))
