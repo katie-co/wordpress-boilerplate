@@ -7,15 +7,19 @@ Ensure you are running at least Node 15.2.0 & npm 7.0.8.
 Spin up a new WordPress site using [Local by Flywheel](https://localwp.com/)
 * Site name: yoursitename.local
 * PHP Version: 7.4+
-* Web Server: nginx or Apache
+* Web Server: nginx
 * Database: MySQL 8.0+
  
 Set [WordPress environment](https://developer.wordpress.org/reference/functions/wp_get_environment_type/) using `wp_get_environment_type()`. This function provides a standardized way for developers to differentiate how they handle specific functionality between production and development sites.
 
 Add the following code to `wp-config.php`
-``` bash
-// Set Wordpress environment
+``` php
+/** Set Wordpress environment to local */
 define( 'WP_ENVIRONMENT_TYPE', 'local' );
+/** Enable Jetpack Offline Mode */
+define( 'JETPACK_DEV_DEBUG', true );
+/** Enable debug mode */
+define( 'WP_DEBUG', true );
 ```
 
 ## Build setup

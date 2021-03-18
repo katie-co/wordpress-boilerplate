@@ -19,7 +19,11 @@ const reload = browserSync.reload
 gulp.task('rollup', function() {
   return gulp.src('js/*.js')
     .pipe(rollup({ 
-      plugins: [babel(), resolve(), commonjs()] 
+            plugins: [
+        babel( { compact: false } ),
+        resolve(), 
+        commonjs()
+      ]
     }, 'umd'))
     .pipe(gulp.dest('.'))
     .pipe(reload({ stream: true })
