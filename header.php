@@ -8,20 +8,17 @@
 
 </head>
 
-<body class="body <?php echo (is_front_page()) ? 'home' : 'not-home'; ?>">
+<body class="body">
 	<header class="header">
-		<section class="header_nav">
-			<nav class="header_nav__navbar">
-				<?php
-				wp_nav_menu(array(
-					'theme_location' => 'menu-top',
-					'container'      => 'ul',
-					'menu_class'     => 'header_nav_ul',
-					'menu_id'        => 'header_nav_id',
-					'depth'          => 0,
-				))
-				?>
-			</nav>
-		</section>
+		<nav class="header__navbar">
+			<?php
+			wp_nav_menu(array(
+				'theme_location' => 'main-menu',
+				'container'      => 'ul',
+				'menu_class'     => 'header__nav-list',
+				'depth'          => 0,
+			))
+			?>
+		</nav>
 	</header>
-	<main class="main">
+	<main id="main" class="main">

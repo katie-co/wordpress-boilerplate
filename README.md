@@ -1,8 +1,13 @@
-A super fast Wordpress theme boilerplate to style to taste
+# README.md
 
-## Setup local environment
+This repo requires node.js, npm and gulp. Install node using [nvm](https://github.com/nvm-sh/nvm). Ensure you are running at least Node 15.2.0 & npm 7.0.8. Install [gulp](https://coolestguidesontheplanet.com/installing-gulp-on-macos/) globally.
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+nvm install node # "node" is an alias for the latest version
+npm install gulp-cli -g
+```
 
-Ensure you are running at least Node 15.2.0 & npm 7.0.8.
+## WordPress setup
 
 Spin up a new WordPress site using [Local by Flywheel](https://localwp.com/)
 * Site name: yoursitename.local
@@ -37,8 +42,6 @@ gulp
 # view all commands
 gulp --tasks
 ```
-
-Add vendor scripts to `gulpfile.js` (line 85), these are concatenated and output to `vendors/all.js`
 
 GitHub Actions will run `gulp build` task to generate compressed `style.css` file at each pull request
 
