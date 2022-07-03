@@ -1,79 +1,63 @@
-const gulp = require('gulp')
-// JS
-const rollup = require('gulp-better-rollup');
-const babel = require('rollup-plugin-babel');
-const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
-const concat = require('gulp-concat')
-const uglify = require('gulp-uglify');
+const gulp = require("gulp");
+// Webpack
+const webpack = require('webpack-stream');
 // SCSS
 const sass = require('gulp-dart-sass')
 const stylelint = require('gulp-stylelint')
-const sourcemaps = require('gulp-sourcemaps')
 const autoprefixer = require('autoprefixer')
 const postcss = require('gulp-postcss')
-// Watch
-const browserSync = require('browser-sync')
-const reload = browserSync.reload
+const concat = require('gulp-concat')
+// Browser Sync
+const browserSync = require("browser-sync");
+const reload = browserSync.reload;
 
-gulp.task('rollup', function() {
-  return gulp.src('js/*.js')
-    .pipe(rollup({ 
-            plugins: [
-        babel( { compact: false } ),
-        resolve(), 
-        commonjs()
-      ]
-    }, 'umd'))
-    .pipe(gulp.dest('.'))
-    .pipe(reload({ stream: true })
-  )
+gulp.task('scripts', function() {
+  return gulp.src('js/main.js')
+    .pipe(webpack({
+      mode: 'development'
+    }))
+    .pipe(gulp.dest('.'));
 });
 
-gulp.task('uglify', function() {
-  return gulp.src('js/*.js')
-    .pipe(rollup({ 
-            plugins: [
-        babel( { compact: true } ),
-        resolve(), 
-        commonjs()
-      ]
-    }, 'umd'))
-    .pipe(uglify())
-    .pipe(gulp.dest('.'))
-    .pipe(reload({ stream: true })
-  )
+gulp.task('minifyScripts', function() {
+  return gulp.src('js/main.js')
+    .pipe(webpack({
+      mode: 'production'
+    }))
+    .pipe(gulp.dest('.'));
 });
 
-gulp.task('browser-sync', function() {
-  const files = ['./scss/*.s+(a|c)ss', './*.php', './js/*.js',];
+gulp.task("browser-sync", function() {
+  const files = ["./scss/*.scss", "./*.php", "./js/*.js",];
   browserSync.init(files, {
-    proxy: 'https://yoursitename.local',
+    proxy: "http://newtheme:81",
     notify: true
   });
-  gulp.watch('./scss/**/*.s+(a|c)ss', gulp.series(css));
-  gulp.watch('./js/*.js'), gulp.series('rollup');
-  gulp.watch('./*.php').on('change', browserSync.reload);
+  gulp.watch("./scss/**/*.scss", gulp.series(css));
+  gulp.watch("./js/*.js"), gulp.series("scripts");
+  gulp.watch("./*.php").on("change", browserSync.reload);
 });
 
+// Stylesheets
 const css = function() {
   return gulp
     .src('./scss/**/*.s+(a|c)ss')
+    // Style Lint
     .pipe(stylelint({
       reporters: [
         {formatter: 'string', console: true}
       ],
-      failAfterError: true,
       console: true
     }))
-    .pipe(sourcemaps.init())
+    // Output
     .pipe(
       sass({
         outputStyle: 'expanded'
       }).on('error', sass.logError)
     )
+    // Autoprefixer
     .pipe(postcss([ autoprefixer() ]))
-    .pipe(sourcemaps.write())
+    // Concatenate
     .pipe(concat('style.css'))
     .pipe(gulp.dest('./'))
     .pipe(reload({ stream: true }));
@@ -82,6 +66,7 @@ const css = function() {
 const minify = function() {
   return gulp
     .src('./scss/**/*.s+(a|c)ss')
+    // Style Lint
     .pipe(stylelint({
       reporters: [
         {formatter: 'string', console: true}
@@ -89,10 +74,11 @@ const minify = function() {
       failAfterError: true,
       console: true
     }))
+    // Compress
     .pipe(
       sass({
         outputStyle: 'compressed'
-      }).on('error', sass.logError)
+      })
     )
     .pipe(postcss([ autoprefixer() ]))
     .pipe(concat('style.css'))
@@ -100,13 +86,17 @@ const minify = function() {
 };
 
 const watch = function(cb) {
-  gulp.watch('./scss/**/*.scss', gulp.series(css));
-  gulp.watch('./js/*.js'), gulp.series('rollup');
-  gulp.watch('./*.php').on('change', browserSync.reload);
+  gulp.watch("./scss/**/*.scss", gulp.series(css));
+  gulp.watch("./js/*.js"), gulp.series("scripts");
+  gulp.watch("./*.php").on("change", browserSync.reload);
   cb();
 };
 
 exports.css = css;
 exports.watch = watch;
-exports.build = gulp.series(minify, 'uglify');
-exports.default = gulp.series(css, 'rollup', watch, 'browser-sync');
+exports.minify = minify;
+exports.build = gulp.series(minify, 'minifyScripts');
+exports.default = gulp.series(watch, 'browser-sync');
+
+// gulp.series // one by one
+// gulp.parallel // altogether
