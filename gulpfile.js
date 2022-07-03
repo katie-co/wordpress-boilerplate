@@ -1,5 +1,5 @@
 const gulp = require("gulp");
-// Webpack
+// Scripts
 const webpack = require('webpack-stream');
 // SCSS
 const sass = require('gulp-dart-sass')
@@ -12,7 +12,7 @@ const browserSync = require("browser-sync");
 const reload = browserSync.reload;
 
 gulp.task('scripts', function() {
-  return gulp.src('js/main.js')
+  return gulp.src('js/scripts.js')
     .pipe(webpack({
       mode: 'development'
     }))
@@ -20,7 +20,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('minifyScripts', function() {
-  return gulp.src('js/main.js')
+  return gulp.src('js/scripts.js')
     .pipe(webpack({
       mode: 'production'
     }))
