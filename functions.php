@@ -47,12 +47,14 @@ register_nav_menus(
  * Enqueue scripts and styles
  */
 function wptheme_styles_and_scripts() {
-    wp_enqueue_style('main-style', get_stylesheet_uri());
-    wp_deregister_script('jquery');
-    wp_enqueue_script('scripts', get_template_directory_uri() . 'scripts.js');
+  // enqueue theme stylesheet with timestamp
+  // https://gist.github.com/MwieMarin/2d7a38d3825ed1bf44e82ef48b3badf9
+  wp_enqueue_style( 'theme-styles', get_stylesheet_directory_uri() . '/style.css', array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
+
+  // enqueue theme script in footer
+  wp_enqueue_script( 'theme-scripts', get_stylesheet_directory_uri() . '/main.js', array(), filemtime( get_stylesheet_directory() . '/scripts.js' ), true );
 }
 add_action('wp_enqueue_scripts', 'wptheme_styles_and_scripts');
-
 /*
  * Register Sidebars
  */
