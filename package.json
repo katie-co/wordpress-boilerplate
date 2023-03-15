@@ -19,7 +19,7 @@
     "stylelint": "^13.8.0",
     "stylelint-config-idiomatic-order": "^8.1.0",
     "stylelint-config-recommended": "^3.0.0",
-    "webpack": "^5.73.0",
+    "webpack": "^5.76.0",
     "webpack-stream": "^7.0.0"
   },
   "dependencies": {
